@@ -9,7 +9,6 @@ config(size="450x110+700+300",background="white")
 frame1 = {"name_of_frame":"first_frame","background":"white","border_thickness":1,"border_color":"green","x":13,"y":5}
 frame2 = {"name_of_frame":"second_frame","background":"white","x":10,"y":70}
 icons = {"name_of_frame":"icons","background":"white","x":400,"y":10}
-frame_for_second_window = {"name_of_frame":str(random.random()),"padx":5,"pady":5}
 
 filename = "eng_rus.csv"
 i = 0
@@ -66,6 +65,7 @@ def translate():
 def second_window():
     global win #for close window
     win=str(random.random())
+    frame_for_second_window = {"name_of_frame":str(random.random()),"padx":5,"pady":5}
 
     config(window=win,frame=frame_for_second_window,size="400x320+600+300",background="white")
     title(window=win,text="Add translate")
