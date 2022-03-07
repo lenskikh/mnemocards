@@ -50,7 +50,10 @@ def next_word():
 
     #Edit
     photo(frame=icons,file="icons/edit.png",row=0,column=0)
-    photo_click().bind("<Button-1>",lambda url:second_window())
+    photo_click().bind("<Button-1>",lambda url:second_window("original"))
+
+    photo(frame=icons,file="icons/edit.png",row=1,column=0)
+    photo_click().bind("<Button-1>",lambda url:second_window("translate"))    
 
 def check_in_web():
     url="https://translate.yandex.com/?lang=en-ru&text="+first_column()
@@ -59,10 +62,9 @@ def check_in_web():
 def translate():
     word = second_column()
     make_label(word,1,0) 
-    photo(frame=icons,file="icons/edit.png",row=1,column=0)
-    photo_click().bind("<Button-1>",lambda url:second_window())
 
-def second_window():
+
+def second_window(what_type):
     global win #for close window
     win=str(random.random())
     frame_for_second_window = {"name_of_frame":str(random.random()),"padx":5,"pady":5}
@@ -70,9 +72,23 @@ def second_window():
     config(window=win,frame=frame_for_second_window,size="400x320+600+300",background="white")
     title(window=win,text="Add translate")
     text_area(window=win,frame=frame_for_second_window,name="entry2",height=15,width=48,row=0,column=0)
-    insert_text_area(name="entry2",text=second_column(),color = "black")
     button(window=win,frame=frame_for_second_window,text="Проверить в Yandex",command=check_in_web,row=1,column=0)
-    button(window=win,frame=frame_for_second_window,text="Добавить",command=add_translate,row=2,column=0)
+    if what_type == "translate":
+        insert_text_area(name="entry2",text=second_column(),color = "black")
+        button(window=win,frame=frame_for_second_window,text="Добавить",command=add_translate,row=2,column=0)
+    else:
+        insert_text_area(name="entry2",text=first_column(),color = "black")
+        button(window=win,frame=frame_for_second_window,text="Добавить",command=add_original,row=2,column=0)
+
+def add_original():
+    word2 = get_info("entry2")
+    content[i] = word2.strip()+";"+second_column()+"\n"
+
+    with open(filename, 'w', encoding="UTF-8") as file:
+        for n in content:
+            file.write(n)
+    msg_box_warning("warning","Добавлено!")
+    quit(window=win)
 
 def add_translate():
     word2 = get_info("entry2")
