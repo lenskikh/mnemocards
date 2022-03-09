@@ -1,6 +1,8 @@
 from tkeasy import *
 import webbrowser
 import random
+import subprocess
+import os
 
 title(text="Cards")
 
@@ -21,8 +23,16 @@ with open(filename, encoding="UTF-8") as f:
 def first_column():
     return content[i].strip().split(";")[0]
 
+#separates a word from a transcription
+def find_word():
+    word = content[i].strip().split(";")[0]
+    return word.strip().split("[")[0]
+
 def second_column():
     return content[i].strip().split(";")[1]
+
+def third_column():
+    return content[i].strip().split(";")[2]    
 
 def make_label(word,row,column):
     return label(frame=frame1,text=word,background="white",width=45,row=row,column=column)
@@ -50,62 +60,81 @@ def next_word():
 
     #Edit
     photo(frame=icons,file="icons/edit.png",row=0,column=0)
-    photo_click().bind("<Button-1>",lambda url:second_window("original"))
+    photo_click().bind("<Button-1>",lambda url:second_window("original",""))
 
     photo(frame=icons,file="icons/edit.png",row=1,column=0)
-    photo_click().bind("<Button-1>",lambda url:second_window("translate"))    
+    photo_click().bind("<Button-1>",lambda url:second_window("translate",""))    
 
 def check_in_web():
-    url="https://translate.yandex.com/?lang=en-ru&text="+first_column()
+    url="https://translate.yandex.com/?lang=en-ru&text="+find_word()
     webbrowser.open_new_tab(url)   
 
 def translate():
     word = second_column()
     make_label(word,1,0) 
 
+def mnemocard():
+    second_window("mnemo","mnemo_label")
 
-def second_window(what_type):
+def rules():
+    win=str(random.random())
+    window_2 = {"name_of_frame":str(random.random()),"padx":5,"pady":5}
+    config(window=win,frame=window_2,size="400x320+600+300",background="white")
+    title(window=win,frame=window_2,text="Правила построения")
+    label(window=win,frame=window_2,text="Test",background="white",width=42,row=0,column=0)
+
+def second_window(what_type, special):
     global win #for close window
     win=str(random.random())
-    frame_for_second_window = {"name_of_frame":str(random.random()),"padx":5,"pady":5}
-
-    config(window=win,frame=frame_for_second_window,size="400x320+600+300",background="white")
+    window_2 = {"name_of_frame":str(random.random()),"padx":5,"pady":5}
+    config(window=win,frame=window_2,size="400x320+600+300",background="white")
     title(window=win,text="Add translate")
-    text_area(window=win,frame=frame_for_second_window,name="entry2",height=15,width=48,row=0,column=0)
-    button(window=win,frame=frame_for_second_window,text="Проверить в Yandex",command=check_in_web,row=1,column=0)
+
+    text_area(window=win,frame=window_2,name="entry2",height=15,width=48,row=0,column=0)  
+
     if what_type == "translate":
         insert_text_area(name="entry2",text=second_column(),color = "black")
-        button(window=win,frame=frame_for_second_window,text="Добавить",command=add_translate,row=2,column=0)
-    else:
+        button(window=win,frame=window_2,text="Сохранить",command=add_translate,row=2,column=0)
+    elif what_type == "original":
         insert_text_area(name="entry2",text=first_column(),color = "black")
-        button(window=win,frame=frame_for_second_window,text="Добавить",command=add_original,row=2,column=0)
+        button(window=win,frame=window_2,text="Сохранить",command=add_original,row=2,column=0)
+    elif what_type == "mnemo":
+        insert_text_area(name="entry2",text=third_column(),color = "black")
+
+    if special == "mnemo_label":
+        button(window=win,frame=window_2,text="Правила мнемоники",command=rules,row=1,column=0)
+        button(window=win,frame=window_2,text="Сохранить",command=add_mnemo,row=2,column=0)
+    else:
+        button(window=win,frame=window_2,text="Проверить в Yandex",command=check_in_web,row=1,column=0)
 
 def add_original():
     word2 = get_info("entry2")
     content[i] = word2.strip()+";"+second_column()+"\n"
-
-    with open(filename, 'w', encoding="UTF-8") as file:
-        for n in content:
-            file.write(n)
-    msg_box_warning("warning","Добавлено!")
-    quit(window=win)
+    save_to_file(content)
 
 def add_translate():
     word2 = get_info("entry2")
     content[i] = first_column()+";"+word2.strip()+";"+"\n"
+    save_to_file(content)
 
+def add_mnemo():
+    word2 = get_info("entry2")
+    content[i] = first_column()+";"+second_column()+";"+word2.strip()+";"+"\n"
+    save_to_file(content)
+
+def save_to_file(content):
     with open(filename, 'w', encoding="UTF-8") as file:
         for n in content:
             file.write(n)
-    msg_box_warning("warning","Добавлено!")
-    quit(window=win)
+    msg_box_warning("warning","Сохранено!")
+    quit(window=win)    
 
 def images():
-    url="https://yandex.ru/images/search?text="+first_column()
+    url="https://yandex.ru/images/search?text="+find_word()
     webbrowser.open_new_tab(url)   
 
 def scrabble():
-    url="https://www.thefreedictionary.com/words-that-start-with-"+first_column()
+    url="https://www.thefreedictionary.com/words-that-start-with-"+find_word()
     webbrowser.open_new_tab(url)  
 
 #Empty screen on the start
@@ -115,8 +144,8 @@ make_label("",1,0)
 #Buttons
 button(frame=frame2,text="Предыдущее слово",command=counter_minus,row=1,column=1)
 button(frame=frame2,text="Следующее слово",command=counter_plus,row=1,column=2)
-button(frame=frame2,text="Перевод",command=translate,row=1,column=3)
-button(frame=frame2,text="Мнемо",command=images,row=1,column=4)
+button(frame=frame2,text="Мнемо",command=mnemocard,row=1,column=3)
+button(frame=frame2,text="Перевод",command=translate,row=1,column=4)
 button(frame=frame2,text="Варианты",command=scrabble,row=1,column=5)
 
 app_loop()
