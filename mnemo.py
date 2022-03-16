@@ -6,7 +6,7 @@ import os
 
 title(text="Cards")
 
-config(size="450x110+700+300",background="white")
+config(size="450x140+700+300",background="white")
 
 frame1 = {"name_of_frame":"first_frame","background":"white","border_thickness":1,"border_color":"green","x":13,"y":5}
 frame2 = {"name_of_frame":"second_frame","background":"white","x":10,"y":70}
@@ -18,7 +18,6 @@ win = ""
 
 with open(filename, encoding="UTF-8") as f:
     content = f.readlines()
-
 
 def first_column():
     return content[i].strip().split(";")[0]
@@ -83,6 +82,31 @@ def rules():
     title(window=win,frame=window_2,text="Правила построения")
     label(window=win,frame=window_2,text="Test",background="white",width=42,row=0,column=0)
 
+def new_word():
+    win=str(random.random())
+    window_2 = {"name_of_frame":str(random.random()),"background":"white","padx":5,"pady":5}
+    config(window=win,frame=window_2,size="345x320+600+300",background="white")  
+    title(window=win,frame=window_2,text="Новое слово") 
+    #original
+    label(window=win,frame=window_2,text="Оригинальное слово",background="white",row=0,column=0)
+    entry(window=win,frame=window_2,name="entry 1",inner_border=4,background="lightyellow",justify="center",row=1,column=0) 
+
+    #translate
+    label(window=win,frame=window_2,text="Перевод",background="white",row=2,column=0)
+    text_area(window=win,frame=window_2,name="area",background="lightyellow",inner_border=4,width=40,height=3,row=3,column=0)
+    
+    #mnemo phase
+    label(window=win,frame=window_2,text="Мнемо-фраза",background="white",row=4,column=0)
+    text_area(window=win,frame=window_2,name="mnemoarea",background="lightyellow",inner_border=4,width=40,height=4,row=5,column=0)
+
+    def save_new_word():
+        content = get_info("entry 1")+";"+get_info("area").strip()+";"+get_info("mnemoarea").strip()+";"+"\n"
+
+        with open(filename, 'a+', encoding="UTF-8") as file:
+            file.write(content)        
+
+    button(window=win,frame=window_2,text="Сохранить",command=save_new_word,row=6,column=0)
+
 def second_window(what_type, special):
     global win #for close window
     win=str(random.random())
@@ -122,6 +146,10 @@ def add_mnemo():
     content[i] = first_column()+";"+second_column()+";"+word2.strip()+";"+"\n"
     save_to_file(content)
 
+def delete_card():
+    content[i] = ""
+    save_to_file(content)    
+
 def save_to_file(content):
     with open(filename, 'w', encoding="UTF-8") as file:
         for n in content:
@@ -142,10 +170,12 @@ make_label("",0,0)
 make_label("",1,0)
 
 #Buttons
-button(frame=frame2,text="Предыдущее слово",command=counter_minus,row=1,column=1)
-button(frame=frame2,text="Следующее слово",command=counter_plus,row=1,column=2)
-button(frame=frame2,text="Мнемо",command=mnemocard,row=1,column=3)
-button(frame=frame2,text="Перевод",command=translate,row=1,column=4)
-button(frame=frame2,text="Варианты",command=scrabble,row=1,column=5)
+button(frame=frame2,text="Предыдущее слово",command=counter_minus,row=1,column=0)
+button(frame=frame2,text="Следующее слово",command=counter_plus,row=1,column=1)
+button(frame=frame2,text="Мнемо",command=mnemocard,row=1,column=2)
+button(frame=frame2,text="Перевод",command=translate,row=1,column=3)
+button(frame=frame2,text="Варианты",command=scrabble,row=1,column=4)
+button(frame=frame2,text="Добавить слово",command=new_word,row=2,column=0)
+button(frame=frame2,text="Удалить карту",command=delete_card,row=2,column=1)
 
 app_loop()
