@@ -6,11 +6,17 @@ import os
 
 title(text="Cards")
 
-config(size="450x140+700+300",background="white")
+config(size="445x155+700+300",background="white")
 
-frame1 = {"name_of_frame":"first_frame","background":"white","border_thickness":1,"border_color":"green","x":13,"y":5}
-frame2 = {"name_of_frame":"second_frame","background":"white","x":10,"y":70}
-icons = {"name_of_frame":"icons","background":"white","x":400,"y":10}
+frame1 = {"name_of_frame":"first_frame","background":"white","border_thickness":1,"border_color":"green","x":13,"y":13}
+buttons = {"name_of_frame":"second_frame","background":"white","x":13,"y":83}
+icons = {"name_of_frame":"icons","background":"white","x":400,"y":20}
+
+tabs = {"File":{"New":"False","Open":"False","Save":"False","Save as":"False","Close":"False","---":"---","Exit":quit},
+"Edit":{"Undo":"False","---":"---","Cut":"False","Copy":"False","Paste":"False","Delete":"False","Select All":"False"},
+"Help":{"Help Index":"False","About...":"False","Help":"False"}}
+
+top_menu(tabs)
 
 filename = "eng_rus.csv"
 i = 0
@@ -170,12 +176,14 @@ make_label("",0,0)
 make_label("",1,0)
 
 #Buttons
-button(frame=frame2,text="Предыдущее слово",command=counter_minus,row=1,column=0)
-button(frame=frame2,text="Следующее слово",command=counter_plus,row=1,column=1)
-button(frame=frame2,text="Мнемо",command=mnemocard,row=1,column=2)
-button(frame=frame2,text="Перевод",command=translate,row=1,column=3)
-button(frame=frame2,text="Варианты",command=scrabble,row=1,column=4)
-button(frame=frame2,text="Добавить слово",command=new_word,row=2,column=0)
-button(frame=frame2,text="Удалить карту",command=delete_card,row=2,column=1)
+button(frame=buttons,text="Предыдущее слово",command=counter_minus,row=1,column=0)
+button(frame=buttons,text="Следующее слово",command=counter_plus,row=1,column=1)
+button(frame=buttons,text="Мнемо",command=mnemocard,row=1,column=2)
+button(frame=buttons,text="Перевод",command=translate,row=1,column=3)
+
+button(frame=buttons,text="Добавить карту",command=new_word,row=2,column=0)
+button(frame=buttons,text="Удалить карту",command=delete_card,row=2,column=1)
+button(frame=buttons,text="Перешать карты",command=False,row=2,column=3)
+button(frame=buttons,text="Варианты",command=scrabble,row=2,column=2)
 
 app_loop()
