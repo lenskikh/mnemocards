@@ -6,7 +6,7 @@ memory = {}
 
 #version
 def version():
-    return "Version 0.9.5"
+    return "Version 0.99"
 
 #new window
 def new_window(**kwargs):
@@ -77,7 +77,7 @@ def frames(**kwargs):
         memory[frame] = Frame(memory[window],highlightbackground=highlightbackground,highlightthickness=highlightthickness,background=background,padx=padx,pady=pady)
         memory[frame].place(x=x,y=y)
 
-    return frame       
+    return frame        
     
 def title(text,**kwargs):
     window = new_window(**kwargs)
@@ -108,12 +108,6 @@ def config(**kwargs):
         memory[window].iconbitmap(icon)
     except:
         pass
-
-def get_password():
-    return memory["password"]
-
-def get_confirm_password():
-    return memory["confirm password"]
 
 def get_info(name):
     try:
@@ -228,6 +222,20 @@ def activebg(**kwargs):
         return activebg
     except:
         pass
+
+def inner_border(**kwargs):
+    try: 
+        inner_border = kwargs["inner_border"]
+        return inner_border
+    except:
+        pass
+
+def asterisks(**kwargs):
+    try: 
+        asterisks = kwargs["asterisks"]
+        return asterisks
+    except:
+        pass
     
 def clipboard_in(selected,**kwargs):
     window = new_window(**kwargs) 
@@ -311,26 +319,12 @@ def entry(name,row,column,**kwargs):
     window = new_window(**kwargs)
     frame = frames(**kwargs)
     memory[name] = Entry(memory[frame],
-        width = width_settings(**kwargs))
+        width = width_settings(**kwargs),
+        bd = inner_border(**kwargs),
+        bg = background(**kwargs),
+        show=asterisks(**kwargs),
+        justify = justification(**kwargs))
     makegrid(memory[name],row,column,**kwargs)
-
-def password(event,focus,entry_name,password_name):
-    try:
-        memory[password_name]
-    except:
-        memory[password_name] = ""
-
-    if memory[entry_name] == focus:
-        memory[password_name]+= event.char
-        x = len(memory[password_name])        
-        clear_area(name=entry_name)
-        insert_text(name=entry_name,text=x*"*")    
-
-def clear_password():
-    memory["password"] = ""
-    
-def clear_confirm_password():
-    memory["confirm password"] = "" 
 
 def checkbox(name,text,row,column,**kwargs):
     window = new_window(**kwargs)
@@ -391,9 +385,10 @@ def text_area(name,row,column,**kwargs):
     frame = frames(**kwargs)
     memory[name] = Text(memory[frame],
         wrap = WORD,
+        bd = inner_border(**kwargs),
+        bg = background(**kwargs),        
         height = height_settings(**kwargs), 
-        width = width_settings(**kwargs),
-        background = "grey95")
+        width = width_settings(**kwargs))
     makegrid(memory[name],row,column,**kwargs)
 
 #Works slowly at big text (in macos)
@@ -402,6 +397,8 @@ def text_area_scroll(name,row,column,**kwargs):
     frame = frames(**kwargs)
     memory[name] = scrolledtext.ScrolledText(memory[frame],
         wrap = WORD,
+        bd = inner_border(**kwargs),
+        bg = background(**kwargs),        
         height = height_settings(**kwargs), 
         width = width_settings(**kwargs),
         background = "grey95")
