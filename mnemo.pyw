@@ -49,13 +49,13 @@ def restart_app():
     quit()
     os.startfile("mnemo.pyw")
 
-def switch_to_russian():
-    russian()
-    restart_app()
-
-def switch_to_english():
-    english()
-    restart_app()
+def switch_to(switch):
+    if switch == "russian":
+        russian()
+        restart_app()
+    elif switch == "english":
+        english()
+        restart_app()
 
 def first_column():
     return content[i].strip().split(";")[0]
@@ -209,6 +209,8 @@ def scrabble():
     url="https://www.thefreedictionary.com/words-that-start-with-"+find_word()
     webbrowser.open_new_tab(url)  
 
+def directions(num): 
+    print(num)
 
 start_settings()
 
@@ -227,7 +229,7 @@ button(frame=buttons,text=interface["delete_card"],command=delete_card,padx=5,pa
 button(frame=buttons,text=interface["mix_cards"],command=False,padx=5,pady=5,row=2,column=3)
 button(frame=buttons,text=interface["variants"],command=scrabble,padx=5,pady=5,row=2,column=2)
 
-tabs = {interface["language"]:{"English":switch_to_english,"Russian":switch_to_russian,"Save":"False","Save as":"False","Close":"False","---":"---","Exit":quit},
+tabs = {interface["language"]:{"English":lambda:switch_to("english"),"Russian":lambda:switch_to("russian"),"---":"---","Exit":quit},
 "Edit":{"Undo":"False","---":"---","Cut":"False","Copy":"False","Paste":"False","Delete":"False","Select All":"False"},
 "Help":{"Help Index":"False","About...":"False","Help":"False"}}
 
