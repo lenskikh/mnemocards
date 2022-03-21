@@ -12,6 +12,9 @@ frame1 = {"name_of_frame":"first_frame","background":"white","border_thickness":
 buttons = {"name_of_frame":"second_frame","background":"white","x":11,"y":83}
 icons = {"name_of_frame":"icons","background":"white","x":400,"y":20}
 
+i = 0
+win = ""
+
 def english():
     save_settings("eng")
     global interface
@@ -23,7 +26,6 @@ def russian():
     interface = load_lang("russian.json")    
 
 def load_lang(filename):
-    filename = filename
     with open(filename, encoding="UTF-8") as f:
         content = f.read()
 
@@ -38,10 +40,12 @@ def start_settings():
             elif "rus" == i:
                 russian()
 
-filename = "eng_rus.csv"
-i = 0
-win = ""
+def load_direction():
+    with open("direction.txt", encoding="UTF-8") as f:
+        for i in f:
+            return i
 
+filename = load_direction()
 with open(filename, encoding="UTF-8") as f:
     content = f.readlines()
 
@@ -52,10 +56,12 @@ def restart_app():
 def switch_to(switch):
     if switch == "russian":
         russian()
-        restart_app()
+        #restart_app()
+        msg_box_warning("warning",interface["restart"])
     elif switch == "english":
         english()
-        restart_app()
+        #restart_app()
+        msg_box_warning("warning",interface["restart"])
 
 def first_column():
     return content[i].strip().split(";")[0]
@@ -114,9 +120,6 @@ def translate():
     word = second_column()
     make_label(word,1,0) 
 
-def mnemocard():
-    second_window("mnemo","mnemo_label")
-
 def rules():
     win=str(random.random())
     window_2 = {"name_of_frame":str(random.random()),"padx":5,"pady":5}
@@ -146,7 +149,10 @@ def new_word():
         content = get_info("entry 1")+";"+get_info("area").strip()+";"+get_info("mnemoarea").strip()+";"+"\n"
 
         with open(filename, 'a+', encoding="UTF-8") as file:
-            file.write(content)        
+            file.write(content)    
+
+        msg_box_warning("warning",interface["saved"])    
+        quit(window=win)  
 
     button(window=win,frame=window_2,text=interface["save"],command=save_new_word,row=6,column=0)
 
@@ -193,13 +199,21 @@ def add_mnemo():
 def delete_card():
     content[i] = ""
     save_to_file(content)    
+    #restart_app()
+    msg_box_warning("warning",interface["restart"])
 
 def save_to_file(content):
     with open(filename, 'w', encoding="UTF-8") as file:
         for n in content:
             file.write(n)
-    msg_box_warning("warning","Сохранено!")
+    msg_box_warning("warning",interface["saved"])
     quit(window=win)    
+
+def save_direction(content):
+    with open("direction.txt", 'w', encoding="UTF-8") as file:
+        for n in content:
+            file.write(n)    
+    msg_box_warning("warning",interface["restart"])
 
 def images():
     url="https://yandex.ru/images/search?text="+find_word()
@@ -208,9 +222,6 @@ def images():
 def scrabble():
     url="https://www.thefreedictionary.com/words-that-start-with-"+find_word()
     webbrowser.open_new_tab(url)  
-
-def directions(num): 
-    print(num)
 
 start_settings()
 
@@ -221,7 +232,7 @@ make_label("",1,0)
 #Buttons
 button(frame=buttons,text=interface["previous"],command=counter_minus,padx=5,pady=5,row=1,column=0)
 button(frame=buttons,text=interface["next"],command=counter_plus,padx=5,pady=5,row=1,column=1)
-button(frame=buttons,text=interface["mnemo"],command=mnemocard,padx=5,pady=5,row=1,column=2)
+button(frame=buttons,text=interface["mnemo"],command=lambda:second_window("mnemo","mnemo_label"),padx=5,pady=5,row=1,column=2)
 button(frame=buttons,text=interface["translate"],command=translate,padx=5,pady=5,row=1,column=3)
 
 button(frame=buttons,text=interface["add_card"],command=new_word,padx=5,pady=5,row=2,column=0)
@@ -230,7 +241,7 @@ button(frame=buttons,text=interface["mix_cards"],command=False,padx=5,pady=5,row
 button(frame=buttons,text=interface["variants"],command=scrabble,padx=5,pady=5,row=2,column=2)
 
 tabs = {interface["language"]:{"English":lambda:switch_to("english"),"Russian":lambda:switch_to("russian"),"---":"---","Exit":quit},
-"Edit":{"Undo":"False","---":"---","Cut":"False","Copy":"False","Paste":"False","Delete":"False","Select All":"False"},
+interface["directions"]:{"English -> Russian":lambda:save_direction("eng_rus.csv"),"Russian -> English":lambda:save_direction("rus_eng.csv")},
 "Help":{"Help Index":"False","About...":"False","Help":"False"}}
 
 top_menu(tabs)
