@@ -116,6 +116,7 @@ def check_in_web():
     url="https://translate.yandex.com/?lang=en-ru&text="+find_word()
     webbrowser.open_new_tab(url)   
 
+#show translate
 def translate():
     word = second_column()
     make_label(word,1,0) 
@@ -123,9 +124,12 @@ def translate():
 def rules():
     win=str(random.random())
     window_2 = {"name_of_frame":str(random.random()),"padx":5,"pady":5}
-    config(window=win,frame=window_2,size="400x320+600+300",background="white")
+    config(window=win,frame=window_2,size="545x495+600+200",background="white")
     title(window=win,frame=window_2,text=interface['rules_read'])
-    label(window=win,frame=window_2,text="Test",background="white",width=42,row=0,column=0)
+    with open("rules.txt", encoding="UTF-8") as reader:
+        text = reader.read()
+    label(window=win,frame=window_2,text=text,background="white",
+    width=58,height=25,wrap=500,justify="left",row=0,column=0)
 
 def new_word():
     win=str(random.random())
@@ -133,15 +137,16 @@ def new_word():
     config(window=win,frame=window_2,size="345x295+600+300",background="white")  
     title(window=win,frame=window_2,text=interface["new_word"]) 
     bg_color = "#FFCC99"
-    #original
+
+    #original text area
     label(window=win,frame=window_2,text=interface["original_word"],background="white",row=0,column=0)
     entry(window=win,frame=window_2,name="entry 1",inner_border=4,background=bg_color,justify="center",row=1,column=0) 
 
-    #translate
+    #translate teat area
     label(window=win,frame=window_2,text=interface["translate"],background="white",row=2,column=0)
     text_area(window=win,frame=window_2,name="area",background=bg_color,inner_border=4,width=40,height=3,row=3,column=0)
     
-    #mnemo phase
+    #mnemo phase - teat area
     label(window=win,frame=window_2,text=interface["mnemo_phrase"],background="white",row=4,column=0)
     text_area(window=win,frame=window_2,name="mnemoarea",background=bg_color,inner_border=4,width=40,height=4,row=5,column=0)
 
@@ -226,7 +231,7 @@ def scrabble():
 start_settings()
 
 #Empty screen on the start
-make_label("",0,0)
+make_label(interface["greetings"],0,0)
 make_label("",1,0)
 
 #Buttons
