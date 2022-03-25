@@ -3,15 +3,12 @@
 "new_word":"New word",
 "original_word":"Original word",
 "translate":"Translate",
-"mnemo_phrase":"Mnemonic Phrase",
 "save":"Save",
 "edit_original":"Edit original word",
 "edit_translate":"Edit translate",
-"rules_of_mnenmo":"Rules of mnemonics",
 "check_in_yandex":"Check in Yandex",
 "previous":"Previous word",
 "next":"Next word",
-"mnemo":"Mnemonic phrase",
 "translate":"Translate",
 "add_card":"Add new card",
 "delete_card":"Delete the card",
@@ -21,5 +18,11 @@
 "saved":"Saved!",
 "restart":"Restart the application for the changes to take effect.",
 "directions":"Directions",
-"greetings":"Press button 'Next Word'"
+"greetings":"Press button 'Next Word'",
+"transcription":"Transcription",
+"rules_of_mnenmo":"Rules of mnemonics",
+"mnemo_button":"Mnemonic phrase",
+"mnemo_phrase":"Mnemonic Phrase",
+"mneno_title":"Edit mnemo",
+"edit_mnemo":"Edit Mnemo Phrase"
 }

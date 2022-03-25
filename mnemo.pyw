@@ -12,7 +12,7 @@ frame1 = {"name_of_frame":"first_frame","background":"white","border_thickness":
 buttons = {"name_of_frame":"second_frame","background":"white","x":11,"y":83}
 icons = {"name_of_frame":"icons","background":"white","x":400,"y":20}
 
-i = 0
+i = 0 #counter for words
 win = ""
 
 def english():
@@ -63,19 +63,18 @@ def switch_to(switch):
         #restart_app()
         msg_box_warning("warning",interface["restart"])
 
-def first_column():
+def column_original_word():
     return content[i].strip().split(";")[0]
 
 #separates a word from a transcription
-def find_word():
-    word = content[i].strip().split(";")[0]
-    return word.strip().split("[")[0]
-
-def second_column():
+def column_transcription():
     return content[i].strip().split(";")[1]
 
-def third_column():
-    return content[i].strip().split(";")[2]    
+def column_translate():
+    return content[i].strip().split(";")[2]
+
+def column_mnemo():
+    return content[i].strip().split(";")[3]    
 
 def make_label(word,row,column):
     return label(frame=frame1,text=word,background="white",width=45,row=row,column=column)
@@ -96,8 +95,8 @@ def counter_plus():
 
 def next_word():
     try:
-        word = first_column()
-        make_label(word,0,0) 
+        word = column_original_word()
+        make_label(word+" "+column_transcription(),0,0) 
     except:
         #End of file
         make_label(interface["end_of_file"],0,0) 
@@ -107,18 +106,18 @@ def next_word():
 
     #Edit icons
     photo(frame=icons,file="icons/edit.png",row=0,column=0)
-    photo_click().bind("<Button-1>",lambda url:second_window("original",""))
+    photo_click().bind("<Button-1>",lambda url:edit_or_add_original_word())
 
     photo(frame=icons,file="icons/edit.png",row=1,column=0)
-    photo_click().bind("<Button-1>",lambda url:second_window("translate",""))    
+    photo_click().bind("<Button-1>",lambda url:edit_or_add_translate())    
 
 def check_in_web():
-    url="https://translate.yandex.com/?lang=en-ru&text="+find_word()
+    url="https://translate.yandex.com/?lang=en-ru&text="+column_original_word()
     webbrowser.open_new_tab(url)   
 
 #show translate
 def translate():
-    word = second_column()
+    word = column_translate()
     make_label(word,1,0) 
 
 def rules():
@@ -134,24 +133,27 @@ def rules():
 def new_word():
     win=str(random.random())
     window_2 = {"name_of_frame":str(random.random()),"background":"white","padx":5,"pady":5}
-    config(window=win,frame=window_2,size="345x295+600+300",background="white")  
+    config(window=win,frame=window_2,size="345x350+600+300",background="white")  
     title(window=win,frame=window_2,text=interface["new_word"]) 
     bg_color = "#FFCC99"
 
     #original text area
     label(window=win,frame=window_2,text=interface["original_word"],background="white",row=0,column=0)
-    entry(window=win,frame=window_2,name="entry 1",inner_border=4,background=bg_color,justify="center",row=1,column=0) 
+    entry(window=win,frame=window_2,name="entry original word",inner_border=4,background=bg_color,justify="center",row=1,column=0) 
+
+    label(window=win,frame=window_2,text=interface["transcription"],background="white",row=2,column=0)
+    entry(window=win,frame=window_2,name="entry transcription",inner_border=4,background=bg_color,justify="center",row=3,column=0)     
 
     #translate teat area
-    label(window=win,frame=window_2,text=interface["translate"],background="white",row=2,column=0)
-    text_area(window=win,frame=window_2,name="area",background=bg_color,inner_border=4,width=40,height=3,row=3,column=0)
+    label(window=win,frame=window_2,text=interface["translate"],background="white",row=4,column=0)
+    text_area(window=win,frame=window_2,name="translate area",background=bg_color,inner_border=4,width=40,height=3,row=5,column=0)
     
     #mnemo phase - teat area
-    label(window=win,frame=window_2,text=interface["mnemo_phrase"],background="white",row=4,column=0)
-    text_area(window=win,frame=window_2,name="mnemoarea",background=bg_color,inner_border=4,width=40,height=4,row=5,column=0)
+    label(window=win,frame=window_2,text=interface["mnemo_phrase"],background="white",row=6,column=0)
+    text_area(window=win,frame=window_2,name="mnemoarea",background=bg_color,inner_border=4,width=40,height=4,row=7,column=0)
 
     def save_new_word():
-        content = get_info("entry 1")+";"+get_info("area").strip()+";"+get_info("mnemoarea").strip()+";"+"\n"
+        content = get_info("entry original word")+";"+get_info("entry transcription").strip()+";"+get_info("translate area").strip()+";"+get_info("mnemoarea").strip()+";"+"\n"
 
         with open(filename, 'a+', encoding="UTF-8") as file:
             file.write(content)    
@@ -159,47 +161,64 @@ def new_word():
         msg_box_warning("warning",interface["saved"])    
         quit(window=win)  
 
-    button(window=win,frame=window_2,text=interface["save"],command=save_new_word,row=6,column=0)
+    button(window=win,frame=window_2,text=interface["save"],command=save_new_word,row=8,column=0)
 
-def second_window(what_type, special):
-    global win #for close window
+def edit_or_add_original_word():
+    global win
     win=str(random.random())
-    window_2 = {"name_of_frame":str(random.random()),"padx":5,"pady":5}
-    config(window=win,frame=window_2,size="400x320+600+300",background="white")
+    frame_original = {"name_of_frame":str(random.random()),"padx":0,"pady":0}    
+    config(window=win,frame=frame_original,size="393x295+600+300",background="white")
+    title(window=win,text=interface["edit_original"])
+    #Original
+    label(window=win,frame=frame_original,text=interface["original_word"],background="#ccffcc",row=0,column=0)
+    text_area(window=win,frame=frame_original,name="original area",height=5,width=48,row=1,column=0) 
+    insert_text_area(name="original area",text=column_original_word(),color = "black")
+    #Transcription
+    label(window=win,frame=frame_original,text=interface["transcription"],background="#ccffcc",row=2,column=0)
+    text_area(window=win,frame=frame_original,name="transcription area",height=5,width=48,row=3,column=0) 
+    insert_text_area(name="transcription area",text=column_transcription(),color = "black")
+    #Buttons
 
-    text_area(window=win,frame=window_2,name="entry2",height=15,width=48,row=0,column=0)  
+    def save_original():
+        content[i] = get_info("original area").strip()+";"+get_info("transcription area").strip()+";"+column_translate()+";"+column_mnemo()+"\n"
+        save_to_file(content)
 
-    if what_type == "translate":
-        title(window=win,text=interface["edit_translate"])
-        insert_text_area(name="entry2",text=second_column(),color = "black")
-        button(window=win,frame=window_2,text=interface["save"],command=add_translate,row=2,column=0)
-    elif what_type == "original":
-        title(window=win,text=interface["edit_original"])
-        insert_text_area(name="entry2",text=first_column(),color = "black")
-        button(window=win,frame=window_2,text=interface["save"],command=add_original,row=2,column=0)
-    elif what_type == "mnemo":
-        insert_text_area(name="entry2",text=third_column(),color = "black")
+    button(window=win,frame=frame_original,text=interface["check_in_yandex"],command=check_in_web,row=4,column=0)
+    button(window=win,frame=frame_original,text=interface["save"],command=save_original,row=5,column=0)
 
-    if special == "mnemo_label":
-        button(window=win,frame=window_2,text=interface["rules_of_mnenmo"],command=rules,row=1,column=0)
-        button(window=win,frame=window_2,text=interface["save"],command=add_mnemo,row=2,column=0)
-    else:
-        button(window=win,frame=window_2,text=interface["check_in_yandex"],command=check_in_web,row=1,column=0)
+def edit_or_add_translate():
+    global win
+    win=str(random.random())
+    frame_original = {"name_of_frame":str(random.random()),"padx":0,"pady":0}    
+    config(window=win,frame=frame_original,size="392x177+600+300",background="white")    
+    title(window=win,text=interface["edit_translate"])
+    label(window=win,frame=frame_original,text=interface["edit_translate"],background="#ccffcc",row=0,column=0)
+    text_area(window=win,frame=frame_original,name="translate area",height=5,width=48,row=1,column=0) 
+    insert_text_area(name="translate area",text=column_translate(),color = "black")
 
-def add_original():
-    word2 = get_info("entry2")
-    content[i] = word2.strip()+";"+second_column()+"\n"
-    save_to_file(content)
+    def save_translate():
+        content[i] = column_original_word()+";"+column_transcription()+";"+get_info("translate area").strip()+";"+column_mnemo()+"\n"
+        save_to_file(content)    
 
-def add_translate():
-    word2 = get_info("entry2")
-    content[i] = first_column()+";"+word2.strip()+";"+"\n"
-    save_to_file(content)
+    button(window=win,frame=frame_original,text=interface["check_in_yandex"],command=check_in_web,row=2,column=0)
+    button(window=win,frame=frame_original,text=interface["save"],command=save_translate,row=3,column=0)    
 
-def add_mnemo():
-    word2 = get_info("entry2")
-    content[i] = first_column()+";"+second_column()+";"+word2.strip()+";"+"\n"
-    save_to_file(content)
+def edit_or_add_memo():
+    global win
+    win=str(random.random())
+    frame_original = {"name_of_frame":str(random.random()),"padx":0,"pady":0}    
+    config(window=win,frame=frame_original,size="392x177+600+300",background="white")    
+    title(window=win,text=interface["mneno_title"])
+    label(window=win,frame=frame_original,text=interface["edit_mnemo"],background="#ccffcc",row=0,column=0)
+    text_area(window=win,frame=frame_original,name="mnemo area",height=5,width=48,row=1,column=0) 
+    insert_text_area(name="mnemo area",text=column_mnemo(),color = "black")
+
+    def save_mnemo():
+        content[i] = column_original_word()+";"+column_transcription()+";"+column_translate()+";"+get_info("mnemo area").strip()+"\n"
+        save_to_file(content)    
+
+    button(window=win,frame=frame_original,text=interface["rules_of_mnenmo"],command=rules,row=2,column=0)
+    button(window=win,frame=frame_original,text=interface["save"],command=save_mnemo,row=3,column=0)       
 
 def delete_card():
     content[i] = ""
@@ -221,11 +240,11 @@ def save_direction(content):
     msg_box_warning("warning",interface["restart"])
 
 def images():
-    url="https://yandex.ru/images/search?text="+find_word()
+    url="https://yandex.ru/images/search?text="+column_original_word()
     webbrowser.open_new_tab(url)   
 
 def scrabble():
-    url="https://www.thefreedictionary.com/words-that-start-with-"+find_word()
+    url="https://www.thefreedictionary.com/words-that-start-with-"+column_original_word()
     webbrowser.open_new_tab(url)  
 
 start_settings()
@@ -237,7 +256,7 @@ make_label("",1,0)
 #Buttons
 button(frame=buttons,text=interface["previous"],command=counter_minus,padx=5,pady=5,row=1,column=0)
 button(frame=buttons,text=interface["next"],command=counter_plus,padx=5,pady=5,row=1,column=1)
-button(frame=buttons,text=interface["mnemo"],command=lambda:second_window("mnemo","mnemo_label"),padx=5,pady=5,row=1,column=2)
+button(frame=buttons,text=interface["mnemo_button"],command=edit_or_add_memo,padx=5,pady=5,row=1,column=2)
 button(frame=buttons,text=interface["translate"],command=translate,padx=5,pady=5,row=1,column=3)
 
 button(frame=buttons,text=interface["add_card"],command=new_word,padx=5,pady=5,row=2,column=0)
