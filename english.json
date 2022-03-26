@@ -14,7 +14,7 @@
 "delete_card":"Delete the card",
 "mix_cards":"Shuffle the cards",
 "variants":"Options",
-"language":"Language",
+"language":"Language of interface",
 "saved":"Saved!",
 "restart":"Restart the application for the changes to take effect.",
 "directions":"Directions",
@@ -24,5 +24,6 @@
 "mnemo_button":"Mnemonic phrase",
 "mnemo_phrase":"Mnemonic Phrase",
 "mneno_title":"Edit mnemo",
-"edit_mnemo":"Edit Mnemo Phrase"
+"edit_mnemo":"Edit Mnemo Phrase",
+"rules_file":"rules_eng.txt"
 }

@@ -125,7 +125,7 @@ def rules():
     window_2 = {"name_of_frame":str(random.random()),"padx":5,"pady":5}
     config(window=win,frame=window_2,size="545x495+600+200",background="white")
     title(window=win,frame=window_2,text=interface['rules_read'])
-    with open("rules.txt", encoding="UTF-8") as reader:
+    with open(interface['rules_file'], encoding="UTF-8") as reader:
         text = reader.read()
     label(window=win,frame=window_2,text=text,background="white",
     width=58,height=25,wrap=500,justify="left",row=0,column=0)
