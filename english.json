@@ -7,8 +7,8 @@
 "edit_original":"Edit original word",
 "edit_translate":"Edit translate",
 "check_in_yandex":"Check in Yandex",
-"previous":"Previous word",
-"next":"Next word",
+"previous":"Show previous word",
+"next":"Show next word",
 "translate":"Translate",
 "add_card":"Add new card",
 "delete_card":"Delete the card",
@@ -18,12 +18,15 @@
 "saved":"Saved!",
 "restart":"Restart the application for the changes to take effect.",
 "directions":"Directions",
-"greetings":"Press button 'Next Word'",
+"greetings":"Press the button 'Show next word'",
 "transcription":"Transcription",
 "rules_of_mnenmo":"Rules of mnemonics",
 "mnemo_button":"Mnemonic phrase",
 "mnemo_phrase":"Mnemonic Phrase",
 "mneno_title":"Edit mnemo",
 "edit_mnemo":"Edit Mnemo Phrase",
-"rules_file":"rules_eng.txt"
+"rules_file":"rules_eng.txt",
+"show in frase":"Show word in frase",
+"original_frase":"Original frase",
+"frase_in_translation":"Frase in translation"
 }

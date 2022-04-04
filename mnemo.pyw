@@ -74,7 +74,13 @@ def column_translate():
     return content[i].strip().split(";")[2]
 
 def column_mnemo():
-    return content[i].strip().split(";")[3]    
+    return content[i].strip().split(";")[3]   
+
+def in_frase():
+    return content[i].strip().split(";")[4]    
+
+def frase_in_translate():
+    return content[i].strip().split(";")[5]          
 
 def make_label(word,row,column):
     return label(frame=frame1,text=word,background="white",width=45,row=row,column=column)
@@ -113,7 +119,27 @@ def next_word():
 
 def check_in_web():
     url="https://translate.yandex.com/?lang=en-ru&text="+column_original_word()
-    webbrowser.open_new_tab(url)   
+    webbrowser.open_new_tab(url)  
+
+def show_in_frase(): 
+    win=str(random.random())
+    window_2 = {"name_of_frame":str(random.random()),"padx":5,"pady":5}
+    config(window=win,frame=window_2,size="402x272+600+300",background="white")
+    title(window=win,frame=window_2,text=interface['rules_read'])  
+    bg_color = "#FFCC99"  
+    label(window=win,frame=window_2,text=interface["original_frase"],background="white",row=0,column=0)
+    text_area(window=win,frame=window_2,name="original area",height=5,width=48,row=1,column=0) 
+    insert_text_area(name="original area",text=in_frase(),color = "black")
+
+    label(window=win,frame=window_2,text=interface["frase_in_translation"],background="white",row=2,column=0)
+    text_area(window=win,frame=window_2,name="translated area",height=5,width=48,row=3,column=0)    
+    insert_text_area(name="translated area",text=frase_in_translate(),color = "black")  
+
+    def save_frases():
+        content[i] = column_original_word()+";"+column_transcription()+";"+column_translate()+";"+column_mnemo()+";"+get_info("original area").strip()+";"+get_info("translated area").strip()+"\n"
+        save_to_file(content)    
+
+    button(window=win,frame=window_2,text=interface["save"],command=save_frases,row=4,column=0)
 
 #show translate
 def translate():
@@ -153,7 +179,7 @@ def new_word():
     text_area(window=win,frame=window_2,name="mnemoarea",background=bg_color,inner_border=4,width=40,height=4,row=7,column=0)
 
     def save_new_word():
-        content = get_info("entry original word")+";"+get_info("entry transcription").strip()+";"+get_info("translate area").strip()+";"+get_info("mnemoarea").strip()+";"+"\n"
+        content = get_info("entry original word")+";"+get_info("entry transcription").strip()+";"+get_info("translate area").strip()+";"+get_info("mnemoarea").strip()+";"+in_frase()+";"+frase_in_translate()+"\n"
 
         with open(filename, 'a+', encoding="UTF-8") as file:
             file.write(content)    
@@ -180,7 +206,7 @@ def edit_or_add_original_word():
     #Buttons
 
     def save_original():
-        content[i] = get_info("original area").strip()+";"+get_info("transcription area").strip()+";"+column_translate()+";"+column_mnemo()+"\n"
+        content[i] = get_info("original area").strip()+";"+get_info("transcription area").strip()+";"+column_translate()+";"+column_mnemo()+";"+in_frase()+";"+frase_in_translate()+"\n"
         save_to_file(content)
 
     button(window=win,frame=frame_original,text=interface["check_in_yandex"],command=check_in_web,row=4,column=0)
@@ -197,7 +223,7 @@ def edit_or_add_translate():
     insert_text_area(name="translate area",text=column_translate(),color = "black")
 
     def save_translate():
-        content[i] = column_original_word()+";"+column_transcription()+";"+get_info("translate area").strip()+";"+column_mnemo()+"\n"
+        content[i] = column_original_word()+";"+column_transcription()+";"+get_info("translate area").strip()+";"+column_mnemo()+";"+in_frase()+";"+frase_in_translate()+"\n"
         save_to_file(content)    
 
     button(window=win,frame=frame_original,text=interface["check_in_yandex"],command=check_in_web,row=2,column=0)
@@ -214,7 +240,7 @@ def edit_or_add_memo():
     insert_text_area(name="mnemo area",text=column_mnemo(),color = "black")
 
     def save_mnemo():
-        content[i] = column_original_word()+";"+column_transcription()+";"+column_translate()+";"+get_info("mnemo area").strip()+"\n"
+        content[i] = column_original_word()+";"+column_transcription()+";"+column_translate()+";"+get_info("mnemo area").strip()+";"+in_frase()+";"+frase_in_translate()+"\n"
         save_to_file(content)    
 
     button(window=win,frame=frame_original,text=interface["rules_of_mnenmo"],command=rules,row=2,column=0)
@@ -231,7 +257,7 @@ def save_to_file(content):
         for n in content:
             file.write(n)
     msg_box_warning("warning",interface["saved"])
-    quit(window=win)    
+    #quit(window=win)    
 
 def save_direction(content):
     with open("direction.txt", 'w', encoding="UTF-8") as file:
@@ -261,8 +287,8 @@ button(frame=buttons,text=interface["translate"],command=translate,padx=5,pady=5
 
 button(frame=buttons,text=interface["add_card"],command=new_word,padx=5,pady=5,row=2,column=0)
 button(frame=buttons,text=interface["delete_card"],command=delete_card,padx=5,pady=5,row=2,column=1)
-button(frame=buttons,text=interface["mix_cards"],command=False,padx=5,pady=5,row=2,column=3)
-button(frame=buttons,text=interface["variants"],command=scrabble,padx=5,pady=5,row=2,column=2)
+button(frame=buttons,text=interface["show in frase"],command=show_in_frase,padx=5,pady=5,row=2,column=2)
+button(frame=buttons,text=interface["variants"],command=scrabble,padx=5,pady=5,row=2,column=3)
 
 tabs = {interface["language"]:{"English":lambda:switch_to("english"),"Russian":lambda:switch_to("russian"),"---":"---","Exit":quit},
 interface["directions"]:{"English -> Russian":lambda:save_direction("eng_rus.csv"),"Russian -> English":lambda:save_direction("rus_eng.csv")},

@@ -25,5 +25,8 @@
 "mnemo_phrase":"Мнемоническая фраза",
 "mneno_title":"Редактирование мнемо фразы",
 "edit_mnemo":"Редактирование мнемо фразы",
-"rules_file":"rules_ru.txt"
+"rules_file":"rules_ru.txt",
+"show in frase":"Показать фразу",
+"original_frase":"Оригинальная фраза",
+"frase_in_translation":"Фраза в переводе"
 }
