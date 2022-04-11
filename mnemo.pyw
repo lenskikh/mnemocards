@@ -6,10 +6,10 @@ import os
 
 title(text="Cards")
 
-config(size="445x160+700+300",background="white")
+config(size="480x160+700+300",background="white")
 
 frame1 = {"name_of_frame":"first_frame","background":"white","border_thickness":1,"border_color":"green","x":13,"y":13}
-buttons = {"name_of_frame":"second_frame","background":"white","x":11,"y":83}
+buttons = {"name_of_frame":"second_frame","background":"white","x":9,"y":83}
 icons = {"name_of_frame":"icons","background":"white","x":400,"y":20}
 
 i = 0 #counter for words
@@ -80,10 +80,13 @@ def in_frase():
     return content[i].strip().split(";")[4]    
 
 def frase_in_translate():
-    return content[i].strip().split(";")[5]          
+    return content[i].strip().split(";")[5]       
+
+def the_whole_string():
+    return content[i]   
 
 def make_label(word,row,column):
-    return label(frame=frame1,text=word,background="white",width=45,row=row,column=column)
+    return label(frame=frame1,text=word,background="white",width=49,row=row,column=column)
 
 def save_settings(arg):
     with open("lang_settings.txt", 'w', encoding="UTF-8") as f:
@@ -252,6 +255,12 @@ def delete_card():
     #restart_app()
     msg_box_warning("warning",interface["restart"])
 
+def send_to_archive():
+    content[i] = the_whole_string()
+    with open("archive.csv", 'a+', encoding="UTF-8") as file:
+        file.write(content[i])    
+    delete_card()
+
 def save_to_file(content):
     with open(filename, 'w', encoding="UTF-8") as file:
         for n in content:
@@ -288,7 +297,7 @@ button(frame=buttons,text=interface["translate"],command=translate,padx=5,pady=5
 button(frame=buttons,text=interface["add_card"],command=new_word,padx=5,pady=5,row=2,column=0)
 button(frame=buttons,text=interface["delete_card"],command=delete_card,padx=5,pady=5,row=2,column=1)
 button(frame=buttons,text=interface["show in frase"],command=show_in_frase,padx=5,pady=5,row=2,column=2)
-button(frame=buttons,text=interface["variants"],command=scrabble,padx=5,pady=5,row=2,column=3)
+button(frame=buttons,text=interface["archive"],command=send_to_archive,padx=5,pady=5,row=2,column=3)
 
 tabs = {interface["language"]:{"English":lambda:switch_to("english"),"Russian":lambda:switch_to("russian"),"---":"---","Exit":quit},
 interface["directions"]:{"English -> Russian":lambda:save_direction("eng_rus.csv"),"Russian -> English":lambda:save_direction("rus_eng.csv")},

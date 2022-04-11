@@ -28,5 +28,6 @@
 "rules_file":"rules_ru.txt",
 "show in frase":"Показать фразу",
 "original_frase":"Оригинальная фраза",
-"frase_in_translation":"Фраза в переводе"
+"frase_in_translation":"Фраза в переводе",
+"archive":"Слово в архив"
 }

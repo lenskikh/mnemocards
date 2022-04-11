@@ -10,7 +10,7 @@
 "previous":"Show previous word",
 "next":"Show next word",
 "translate":"Translate",
-"add_card":"Add new card",
+"add_card":"Add a new card",
 "delete_card":"Delete the card",
 "mix_cards":"Shuffle the cards",
 "variants":"Options",
@@ -28,5 +28,6 @@
 "rules_file":"rules_eng.txt",
 "show in frase":"Show word in frase",
 "original_frase":"Original frase",
-"frase_in_translation":"Frase in translation"
+"frase_in_translation":"Frase in translation",
+"archive":"Send  to  archive"
 }
