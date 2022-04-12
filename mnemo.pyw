@@ -10,7 +10,7 @@ config(size="480x160+700+300",background="white")
 
 frame1 = {"name_of_frame":"first_frame","background":"white","border_thickness":1,"border_color":"green","x":13,"y":13}
 buttons = {"name_of_frame":"second_frame","background":"white","x":9,"y":83}
-icons = {"name_of_frame":"icons","background":"white","x":400,"y":20}
+icons = {"name_of_frame":"icons","background":"white","x":440,"y":20}
 
 i = 0 #counter for words
 win = ""
