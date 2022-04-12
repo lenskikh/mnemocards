@@ -49,10 +49,6 @@ filename = load_direction()
 with open(filename, encoding="UTF-8") as f:
     content = f.readlines()
 
-def restart_app():
-    quit()
-    os.startfile("mnemo.pyw")
-
 def switch_to(switch):
     if switch == "russian":
         russian()
@@ -277,10 +273,6 @@ def save_direction(content):
 def images():
     url="https://yandex.ru/images/search?text="+column_original_word()
     webbrowser.open_new_tab(url)   
-
-def scrabble():
-    url="https://www.thefreedictionary.com/words-that-start-with-"+column_original_word()
-    webbrowser.open_new_tab(url)  
 
 start_settings()
 
