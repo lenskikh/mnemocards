@@ -123,14 +123,14 @@ def check_in_web():
 def show_in_frase(): 
     win=str(random.random())
     window_2 = {"name_of_frame":str(random.random()),"padx":5,"pady":5}
-    config(window=win,frame=window_2,size="402x272+600+300",background="white")
+    config(window=win,frame=window_2,size="402x272+720+520",background="white")
     title(window=win,frame=window_2,text=interface['rules_read'])  
     bg_color = "#FFCC99"  
-    label(window=win,frame=window_2,text=interface["original_frase"],background="white",row=0,column=0)
+    label(window=win,frame=window_2,text=interface["original_frase"],background="#ccffcc",row=0,column=0)
     text_area(window=win,frame=window_2,name="original area",height=5,width=48,row=1,column=0) 
     insert_text_area(name="original area",text=in_frase(),color = "black")
 
-    label(window=win,frame=window_2,text=interface["frase_in_translation"],background="white",row=2,column=0)
+    label(window=win,frame=window_2,text=interface["frase_in_translation"],background="#ccffcc",row=2,column=0)
     text_area(window=win,frame=window_2,name="translated area",height=5,width=48,row=3,column=0)    
     insert_text_area(name="translated area",text=frase_in_translate(),color = "black")  
 
@@ -148,7 +148,7 @@ def translate():
 def rules():
     win=str(random.random())
     window_2 = {"name_of_frame":str(random.random()),"padx":5,"pady":5}
-    config(window=win,frame=window_2,size="545x495+600+200",background="white")
+    config(window=win,frame=window_2,size="545x495+720+520",background="white")
     title(window=win,frame=window_2,text=interface['rules_read'])
     with open(interface['rules_file'], encoding="UTF-8") as reader:
         text = reader.read()
@@ -192,7 +192,7 @@ def edit_or_add_original_word():
     global win
     win=str(random.random())
     frame_original = {"name_of_frame":str(random.random()),"padx":0,"pady":0}    
-    config(window=win,frame=frame_original,size="393x295+600+300",background="white")
+    config(window=win,frame=frame_original,size="393x295+720+520",background="white")
     title(window=win,text=interface["edit_original"])
     #Original
     label(window=win,frame=frame_original,text=interface["original_word"],background="#ccffcc",row=0,column=0)
@@ -215,7 +215,7 @@ def edit_or_add_translate():
     global win
     win=str(random.random())
     frame_original = {"name_of_frame":str(random.random()),"padx":0,"pady":0}    
-    config(window=win,frame=frame_original,size="392x177+600+300",background="white")    
+    config(window=win,frame=frame_original,size="392x177+720+520",background="white")    
     title(window=win,text=interface["edit_translate"])
     label(window=win,frame=frame_original,text=interface["edit_translate"],background="#ccffcc",row=0,column=0)
     text_area(window=win,frame=frame_original,name="translate area",height=5,width=48,row=1,column=0) 
