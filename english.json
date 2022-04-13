@@ -29,5 +29,6 @@
 "show in frase":"Show word in frase",
 "original_frase":"Original frase",
 "frase_in_translation":"Frase in translation",
-"archive":"Send  to  archive"
+"archive":"Send  to  archive",
+"check_field":"Enter part of translation and press 'Next word' or leave the field empty"
 }

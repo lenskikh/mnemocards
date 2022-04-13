@@ -1,3 +1,4 @@
+from tabnanny import check
 from tkeasy import *
 import webbrowser
 import random
@@ -6,10 +7,11 @@ import os
 
 title(text="Cards")
 
-config(size="480x160+700+300",background="white")
+config(size="480x200+700+300",background="white")
 
 frame1 = {"name_of_frame":"first_frame","background":"white","border_thickness":1,"border_color":"green","x":13,"y":13}
-buttons = {"name_of_frame":"second_frame","background":"white","x":9,"y":83}
+check_field = {"name_of_frame":"check","background":"white","border_thickness":0,"x":11,"y":83}
+buttons = {"name_of_frame":"buttons","background":"white","x":9,"y":112}
 icons = {"name_of_frame":"icons","background":"white","x":440,"y":20}
 
 i = 0 #counter for words
@@ -274,15 +276,21 @@ def images():
     url="https://yandex.ru/images/search?text="+column_original_word()
     webbrowser.open_new_tab(url)   
 
+def check_translation():
+    if get_info("check_entry") == interface["check_field"]:
+        counter_plus()
+    elif get_info("check_entry") in column_translate():
+        counter_plus()
+
 start_settings()
 
-#Empty screen on the start
+#greeting on the start
 make_label(interface["greetings"],0,0)
 make_label("",1,0)
 
 #Buttons
 button(frame=buttons,text=interface["previous"],command=counter_minus,padx=5,pady=5,row=1,column=0)
-button(frame=buttons,text=interface["next"],command=counter_plus,padx=5,pady=5,row=1,column=1)
+button(frame=buttons,text=interface["next"],command=check_translation,padx=5,pady=5,row=1,column=1)
 button(frame=buttons,text=interface["mnemo_button"],command=edit_or_add_memo,padx=5,pady=5,row=1,column=2)
 button(frame=buttons,text=interface["translate"],command=translate,padx=5,pady=5,row=1,column=3)
 
@@ -290,6 +298,9 @@ button(frame=buttons,text=interface["add_card"],command=new_word,padx=5,pady=5,r
 button(frame=buttons,text=interface["delete_card"],command=delete_card,padx=5,pady=5,row=2,column=1)
 button(frame=buttons,text=interface["show in frase"],command=show_in_frase,padx=5,pady=5,row=2,column=2)
 button(frame=buttons,text=interface["archive"],command=send_to_archive,padx=5,pady=5,row=2,column=3)
+
+entry(frame=check_field,name="check_entry",width=75,background="lightyellow",row=2,column=0)
+insert_text(frame=check_field,name="check_entry",text=interface["check_field"])
 
 tabs = {interface["language"]:{"English":lambda:switch_to("english"),"Russian":lambda:switch_to("russian"),"---":"---","Exit":quit},
 interface["directions"]:{"English -> Russian":lambda:save_direction("eng_rus.csv"),"Russian -> English":lambda:save_direction("rus_eng.csv")},
