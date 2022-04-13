@@ -7,7 +7,7 @@ import os
 
 title(text="Cards")
 
-config(size="480x200+700+300",background="white")
+config(size="480x190+700+300",background="white")
 
 frame1 = {"name_of_frame":"first_frame","background":"white","border_thickness":1,"border_color":"green","x":13,"y":13}
 check_field = {"name_of_frame":"check","background":"white","border_thickness":0,"x":11,"y":83}
@@ -15,6 +15,8 @@ buttons = {"name_of_frame":"buttons","background":"white","x":9,"y":112}
 icons = {"name_of_frame":"icons","background":"white","x":440,"y":20}
 
 i = 0 #counter for words
+report_counter = 0 #counter for report
+translation_counter = 0
 win = ""
 
 def english():
@@ -101,6 +103,9 @@ def counter_plus():
     next_word()
 
 def next_word():
+    #Clear check area
+    clear_area(name="check_entry")
+
     try:
         word = column_original_word()
         make_label(word+" "+column_transcription(),0,0) 
@@ -144,6 +149,8 @@ def show_in_frase():
 
 #show translate
 def translate():
+    global translation_counter 
+    translation_counter+= 1
     word = column_translate()
     make_label(word,1,0) 
 
@@ -277,10 +284,17 @@ def images():
     webbrowser.open_new_tab(url)   
 
 def check_translation():
+    global report_counter
     if get_info("check_entry") == interface["check_field"]:
         counter_plus()
-    elif get_info("check_entry") in column_translate():
+    elif get_info("check_entry") == "":
         counter_plus()
+    elif get_info("check_entry") in column_translate():
+        report_counter+= 1
+        counter_plus()
+
+def show_report():
+    msg_box("Report",f'{interface["knows"]}{report_counter}{interface["words"]}\n{interface["pressed"]}{translation_counter}{interface["times"]}')
 
 start_settings()
 
@@ -304,7 +318,7 @@ insert_text(frame=check_field,name="check_entry",text=interface["check_field"])
 
 tabs = {interface["language"]:{"English":lambda:switch_to("english"),"Russian":lambda:switch_to("russian"),"---":"---","Exit":quit},
 interface["directions"]:{"English -> Russian":lambda:save_direction("eng_rus.csv"),"Russian -> English":lambda:save_direction("rus_eng.csv")},
-"Help":{"Help Index":"False","About...":"False","Help":"False"}}
+interface["tools"]:{interface["report"]:show_report}}
 
 top_menu(tabs)
 

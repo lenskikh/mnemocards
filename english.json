@@ -30,5 +30,11 @@
 "original_frase":"Original frase",
 "frase_in_translation":"Frase in translation",
 "archive":"Send  to  archive",
-"check_field":"Enter part of translation and press 'Next word' or leave the field empty"
+"check_field":"Enter part of the translation and click 'Next word' or leave the field empty",
+"tools":"Tools",
+"report":"Report",
+"knows":"You knows ",
+"words":" words",
+"pressed":"You pressed 'Translation Button' ",
+"times":" times"
 }
