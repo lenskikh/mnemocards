@@ -187,13 +187,11 @@ def new_word():
     text_area(window=win,frame=window_2,name="mnemoarea",background=bg_color,inner_border=4,width=40,height=4,row=7,column=0)
 
     def save_new_word():
-        content = get_info("entry original word")+";"+get_info("entry transcription").strip()+";"+get_info("translate area").strip()+";"+get_info("mnemoarea").strip()+";"+in_frase()+";"+frase_in_translate()+"\n"
-
-        with open(filename, 'a+', encoding="UTF-8") as file:
-            file.write(content)    
-
-        msg_box_warning("warning",interface["saved"])    
-        quit(window=win)  
+        global content
+        the_new_word = get_info("entry original word")+";"+get_info("entry transcription").strip()+";"+get_info("translate area").strip()+";"+get_info("mnemoarea").strip()+";"+in_frase()+";"+frase_in_translate()+"\n"
+        content.append(the_new_word)
+        content = sorted(content)
+        save_to_file(content)
 
     button(window=win,frame=window_2,text=interface["save"],command=save_new_word,row=8,column=0)
 
