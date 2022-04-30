@@ -3,7 +3,6 @@ from tkeasy import *
 import webbrowser
 import random
 import json
-import os
 
 title(text="Cards")
 
@@ -49,9 +48,13 @@ def load_direction():
         for i in f:
             return i
 
+#load cards
 filename = load_direction()
 with open(filename, encoding="UTF-8") as f:
     content = f.readlines()
+
+def mix_cards():
+    random.shuffle(content)
 
 def switch_to(switch):
     if switch == "russian":
@@ -316,7 +319,7 @@ insert_text(frame=check_field,name="check_entry",text=interface["check_field"])
 
 tabs = {interface["language"]:{"English":lambda:switch_to("english"),"Russian":lambda:switch_to("russian"),"---":"---","Exit":quit},
 interface["directions"]:{"English -> Russian":lambda:save_direction("eng_rus.csv"),"Russian -> English":lambda:save_direction("rus_eng.csv")},
-interface["tools"]:{interface["report"]:show_report}}
+interface["tools"]:{interface["report"]:show_report,interface["shuffle_cards"]:mix_cards,}}
 
 top_menu(tabs)
 
