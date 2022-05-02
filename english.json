@@ -37,5 +37,8 @@
 "words":" words",
 "pressed":"You pressed 'Translation Button' ",
 "times":" times",
-"shuffle_cards":"Shuffle the cards"
+"shuffle_cards":"Shuffle the cards",
+"search word":"Search word",
+"search button":"Search",
+"search menu":"Search word"
 }

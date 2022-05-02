@@ -37,5 +37,8 @@
 "words":" слов(а)",
 "pressed":"Вы нажали кнопку 'Перевод' ",
 "times":" раз(а)",
-"shuffle_cards":"Перемешать карточки"
+"shuffle_cards":"Перемешать карточки",
+"search word":"Поиск слова",
+"search button":"Поиск",
+"search menu":"Поиск слова"
 }

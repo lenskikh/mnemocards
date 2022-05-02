@@ -56,14 +56,38 @@ with open(filename, encoding="UTF-8") as f:
 def mix_cards():
     random.shuffle(content)
 
+def search():
+    win=str(random.random())
+    window_2 = {"name_of_frame":str(random.random()),"padx":5,"pady":5}
+    config(window=win,frame=window_2,size="385x70+720+550",background="white")
+    title(window=win,frame=window_2,text=interface["search word"])  
+
+    def search_word():
+        global i
+        word = get_info("serch entry")
+
+        length_list = len(content)
+        counter_list = 0
+
+        while counter_list < length_list:
+
+            if word in content[counter_list]:
+                i = counter_list
+                make_label(content[i].strip().split(";")[0]+" "+column_transcription(),0,0)
+                make_label("",1,0)
+                add_icons()
+            counter_list+= 1
+
+    bg_color = "#FFCC99" 
+    entry(window=win,frame=window_2,name="serch entry",inner_border=4,background=bg_color,width=60,row=0,column=0) 
+    button(window=win,frame=window_2,text=interface["search button"],command=search_word,row=1,column=0)
+
 def switch_to(switch):
     if switch == "russian":
         russian()
-        #restart_app()
         msg_box_warning("warning",interface["restart"])
     elif switch == "english":
         english()
-        #restart_app()
         msg_box_warning("warning",interface["restart"])
 
 def column_original_word():
@@ -118,7 +142,9 @@ def next_word():
 
     #clear line for the next word
     make_label("",1,0)  
+    add_icons()
 
+def add_icons():
     #Edit icons
     photo(frame=icons,file="icons/edit.png",row=0,column=0)
     photo_click().bind("<Button-1>",lambda url:edit_or_add_original_word())
@@ -136,11 +162,11 @@ def show_in_frase():
     config(window=win,frame=window_2,size="402x272+720+520",background="white")
     title(window=win,frame=window_2,text=interface['rules_read'])  
     bg_color = "#FFCC99"  
-    label(window=win,frame=window_2,text=interface["original_frase"],background="#ccffcc",row=0,column=0)
+    label(window=win,frame=window_2,text=interface["original_frase"],background=bg_color,row=0,column=0)
     text_area(window=win,frame=window_2,name="original area",height=5,width=48,row=1,column=0) 
     insert_text_area(name="original area",text=in_frase(),color = "black")
 
-    label(window=win,frame=window_2,text=interface["frase_in_translation"],background="#ccffcc",row=2,column=0)
+    label(window=win,frame=window_2,text=interface["frase_in_translation"],background=bg_color,row=2,column=0)
     text_area(window=win,frame=window_2,name="translated area",height=5,width=48,row=3,column=0)    
     insert_text_area(name="translated area",text=frase_in_translate(),color = "black")  
 
@@ -319,7 +345,7 @@ insert_text(frame=check_field,name="check_entry",text=interface["check_field"])
 
 tabs = {interface["language"]:{"English":lambda:switch_to("english"),"Russian":lambda:switch_to("russian"),"---":"---","Exit":quit},
 interface["directions"]:{"English -> Russian":lambda:save_direction("eng_rus.csv"),"Russian -> English":lambda:save_direction("rus_eng.csv")},
-interface["tools"]:{interface["report"]:show_report,interface["shuffle_cards"]:mix_cards,}}
+interface["tools"]:{interface["report"]:show_report,interface["shuffle_cards"]:mix_cards,interface["search menu"]:search}}
 
 top_menu(tabs)
 
