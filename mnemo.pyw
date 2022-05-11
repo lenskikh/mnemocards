@@ -196,7 +196,7 @@ def rules():
 def new_word():
     win=str(random.random())
     window_2 = {"name_of_frame":str(random.random()),"background":"white","padx":5,"pady":5}
-    config(window=win,frame=window_2,size="345x350+600+300",background="white")  
+    config(window=win,frame=window_2,size="345x570",background="white")  
     title(window=win,frame=window_2,text=interface["new_word"]) 
     bg_color = "#FFCC99"
 
@@ -215,14 +215,22 @@ def new_word():
     label(window=win,frame=window_2,text=interface["mnemo_phrase"],background="white",row=6,column=0)
     text_area(window=win,frame=window_2,name="mnemoarea",background=bg_color,inner_border=4,width=40,height=4,row=7,column=0)
 
+    #real frase from text
+    label(window=win,frame=window_2,text=interface["original_frase"],background="white",row=8,column=0)
+    text_area(window=win,frame=window_2,name="text_frase",background=bg_color,inner_border=4,width=40,height=4,row=9,column=0)
+
+    #real frase from text
+    label(window=win,frame=window_2,text=interface["frase_in_translation"],background="white",row=10,column=0)
+    text_area(window=win,frame=window_2,name="translated_frase",background=bg_color,inner_border=4,width=40,height=4,row=11,column=0)
+
     def save_new_word():
         global content
-        the_new_word = get_info("entry original word")+";"+get_info("entry transcription").strip()+";"+get_info("translate area").strip()+";"+get_info("mnemoarea").strip()+";"+in_frase()+";"+frase_in_translate()+"\n"
+        the_new_word = get_info("entry original word")+";"+get_info("entry transcription").strip()+";"+get_info("translate area").strip()+";"+get_info("mnemoarea").strip()+";"+get_info("text_frase").strip()+";"+get_info("translated_frase").strip()+"\n"
         content.append(the_new_word)
         content = sorted(content)
         save_to_file(content)
 
-    button(window=win,frame=window_2,text=interface["save"],command=save_new_word,row=8,column=0)
+    button(window=win,frame=window_2,text=interface["save"],command=save_new_word,row=12,column=0)
 
 def edit_or_add_original_word():
     global win
