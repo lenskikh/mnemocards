@@ -64,7 +64,7 @@ def search():
 
     def search_word():
         global i
-        word = get_info("serch entry")
+        word = get_info("serch entry").strip()
 
         length_list = len(content)
         counter_list = 0
@@ -345,7 +345,7 @@ insert_text(frame=check_field,name="check_entry",text=interface["check_field"])
 
 tabs = {interface["language"]:{"English":lambda:switch_to("english"),"Russian":lambda:switch_to("russian"),"---":"---","Exit":quit},
 interface["directions"]:{"English -> Russian":lambda:save_direction("eng_rus.csv"),"Russian -> English":lambda:save_direction("rus_eng.csv")},
-interface["tools"]:{interface["report"]:show_report,interface["shuffle_cards"]:mix_cards,interface["search menu"]:search}}
+interface["tools"]:{interface["shuffle_cards"]:mix_cards,interface["search menu"]:search,interface["report"]:show_report}}
 
 top_menu(tabs)
 
